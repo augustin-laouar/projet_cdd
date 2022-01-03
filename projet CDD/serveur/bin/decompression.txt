@@ -1,0 +1,115 @@
+int compressionLZW(FILE * entre, FILE* sortie){
+	initDico();
+	char c[1];
+	char * last = malloc(sizeof(char)*BUFSIZ);
+	char * buff = malloc(sizeof(char)*BUFSIZ);
+	int code;
+	*last = fgetc(entre); // dernier mot lu
+	int i =0;
+	while(!feof(entre)){
+		*c = fgetc(entre);
+		strcpy(buff,last);
+		strcat(buff,c); // permet de conserver la valeur de last, sinon elle sera perdu
+		code = estDansDico(buff);
+		if(code != -1){// si last + c existe dans le dictionaire
+			strcpy(last,buff);
+		}
+		else{
+			code = estDansDico(last);
+			emettre(code,sortie);
+			i++;
+			if(ajouterDico(buff)==-1){
+				printf("STOP : %d code envoyés",i);
+				return -1;
+			}
+			strcpy(last,c);
+		}
+	}
+	printf("%d codes emis \n",i);
+	return 0;
+}
+
+
+
+
+//DECODAGE
+
+
+void decompressionLZW(FILE *entre,FILE* sortie)
+{
+		initDico();
+		char * ancien = malloc(sizeof(char)*BUFSIZ);
+		int code;
+		fscanf(entre,"%d",&code);
+		valeur(code,ancien);
+		emettreD(ancien,sortie);
+		char *nouveau = malloc(sizeof(char)*BUFSIZ);
+		char * aux = malloc(sizeof(char)*BUFSIZ);
+		char * val = malloc(sizeof(char)*BUFSIZ);
+		while(fscanf(entre,"%d",&code)!=EOF){
+			valeur(code,val);
+			if(val == NULL){ // si code n'est pas dans la table
+						 printf("NULL\n");
+						 strcpy(nouveau,ancien);
+						 strcat(nouveau,&ancien[0]);
+				}
+				else{
+					strcpy(nouveau,val);
+				}
+				emettreD(nouveau,sortie);
+				strcpy(aux,ancien);
+				strcat(aux,&nouveau[0]);
+				ajouterDico(aux);
+				strcpy(ancien,nouveau);
+			}
+		}
+
+
+
+
+void decompressionLZW(FILE *entre,FILE* sortie)
+{
+		initDico();
+		char * S = malloc(sizeof(char)*BUFSIZ);
+		S[0]='\0';
+		int code;
+		char *m = malloc(sizeof(char)*BUFSIZ);
+		char * aux = malloc(sizeof(char)*BUFSIZ);
+		char * val = malloc(sizeof(char)*BUFSIZ);
+		while(fscanf(entre,"%d",&code)!=EOF){
+			if(code<256){
+						 valeur(code,val);
+						 strcpy(m,val);
+						 printf("Emettre code (%d) de base: %c \n",code,m[0]);
+						 emettreD(&m[0],sortie);
+						 // s +m
+						 strcpy(aux,S);
+						 strcat(aux,m);
+						 if(estDansDico(aux)!=-1){
+							 strcpy(S,aux);
+						 }
+						 else{
+							 ajouterDico(aux);
+							 strcpy(S,m);
+						 }
+						}
+				else{
+					valeur(code,val);
+					strcpy(m,val);
+					printf("String : %s : ",m);
+					for(int i=0;i<(int)strlen(m);i++){
+						printf("Emettre (%d) %d eme fois: %c \n",code,i,m[i]);
+						emettreD(&m[i],sortie);
+						strcpy(aux,S);
+						strcat(aux,&m[i]);
+						if(estDansDico(aux)!=-1){
+							strcpy(S,aux);
+						}
+						else{
+							ajouterDico(aux);
+							strcpy(S,&m[i]);
+						}
+					}
+				}
+			}
+		}

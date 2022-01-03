@@ -1,0 +1,13 @@
+Pour le fichier li1.txt , le meilleur reset est : 0 
+Pour le fichier li2.txt , le meilleur reset est : 0 
+Pour le fichier li3.txt , le meilleur reset est : 0 
+Pour le fichier li4.txt , le meilleur reset est : 3800 
+Pour le fichier li5.txt , le meilleur reset est : 3800 
+Pour le fichier li6.txt , le meilleur reset est : 3800 
+Pour le fichier li7.txt , le meilleur reset est : 3800 
+Pour le fichier li8.txt , le meilleur reset est : 3800 
+Pour le fichier num1.txt , le meilleur reset est : 3800 
+Pour le fichier num2.txt , le meilleur reset est : 3800 
+Pour le fichier num3.txt , le meilleur reset est : 3800 
+Pour le fichier li9.txt , le meilleur reset est : 3800 
+Pour le fichier li10.txt , le meilleur reset est : 3800 
